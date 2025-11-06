@@ -1,0 +1,137 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background: #f8d6d8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  width: 900px;
+  height: 550px;
+  background: #ffecec;
+  border-radius: 25px;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.12);
+  transition: .6s;
+  position: relative;
+}
+
+/* FORMULÁRIO */
+.form-box {
+  width: 50%;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #b24759;
+  margin-bottom: 30px;
+}
+
+.form {
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+  animation: fade .5s ease forwards;
+}
+
+.form.active {
+  display: flex;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+input {
+  padding: 13px;
+  border-radius: 7px;
+  border: 1px solid #c69aa1;
+  outline: none;
+  font-size: 15px;
+}
+
+.btn {
+  background: #d94e63;
+  border: none;
+  padding: 13px;
+  border-radius: 7px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.btn:hover {
+  background: #b83c50;
+}
+
+.toggle {
+  font-size: 14px;
+  color: #5a2a35;
+}
+
+.toggle span {
+  font-weight: 600;
+  color: #d94e63;
+  cursor: pointer;
+}
+
+/* IMAGEM */
+.img-box {
+  width: 50%;
+  background: #f7a9ae;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .7s ease;
+}
+
+.img-box img {
+  width: 330px;
+  transition: .7s;
+}
+
+/* ANIMAÇÃO AO CADASTRAR */
+.container.active .img-box {
+  transform: translateX(-180px);
+}
+
+/* RESPONSIVO */
+@media(max-width: 850px) {
+  .container {
+    flex-direction: column-reverse;
+    width: 90%;
+    height: auto;
+    padding-bottom: 25px;
+  }
+
+  .img-box {
+    width: 100%;
+    padding: 30px;
+    transform: none !important;
+  }
+
+  .img-box img {
+    width: 260px;
+  }
+
+  .form-box {
+    width: 100%;
+    padding: 40px;
+  }
+}
