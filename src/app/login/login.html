@@ -1,65 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eudora Login</title>
+<div class="container" [class.active]="modoCadastro">
+  <div class="form-box">
+    <h2>{{ modoCadastro ? 'Criar Conta' : 'Entrar' }}</h2>
 
-</head>
-<body>
-  
-  <div class="container" id="container">
-    
- 
-    <div class="form-box">
-      <h2 id="titulo">Entrar</h2>
+    <!-- Formulário de Login -->
+    <form *ngIf="!modoCadastro" (ngSubmit)="onLogin()">
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+      <input type="password" placeholder="Senha" [(ngModel)]="senha" name="senha" required />
+      <button class="btn" type="submit">Login</button>
+      <p class="toggle">
+        Não tem conta?
+        <span (click)="alternarModo()">Cadastrar</span>
+      </p>
+    </form>
 
-   
-      <form id="formLogin" class="form active">
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Senha" required />
-        <button class="btn">Login</button>
-        <p class="toggle">Não tem conta? <span id="goCadastrar">Cadastrar</span></p>
-      </form>
-
-  
-      <form id="formCadastro" class="form">
-        <input type="text" placeholder="Nome completo" required />
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Criar senha" required />
-        <button class="btn">Cadastrar</button>
-        <p class="toggle">Já possui conta? <span id="goLogin">Entrar</span></p>
-      </form>
-    </div>
-
-
-    <div class="img-box">
-      <img src="sacola.jpg" alt="Sacola Eudora">
-    </div>
-
+    <!-- Formulário de Cadastro -->
+    <form *ngIf="modoCadastro" (ngSubmit)="onCadastrar()">
+      <input type="text" placeholder="Nome completo" [(ngModel)]="nome" name="nome" required />
+      <input type="email" placeholder="Email" [(ngModel)]="email" name="email" required />
+      <input type="password" placeholder="Criar senha" [(ngModel)]="senha" name="senha" required />
+      <button class="btn" type="submit">Cadastrar</button>
+      <p class="toggle">
+        Já possui conta?
+        <span (click)="alternarModo()">Entrar</span>
+      </p>
+    </form>
   </div>
 
-
-  <script>
-    const container = document.getElementById("container");
-    const formLogin = document.getElementById("formLogin");
-    const formCadastro = document.getElementById("formCadastro");
-    const titulo = document.getElementById("titulo");
-
-    document.getElementById("goCadastrar").onclick = () => {
-      container.classList.add("active");
-      formLogin.classList.remove("active");
-      formCadastro.classList.add("active");
-      titulo.innerText = "Criar Conta";
-    };
-
-    document.getElementById("goLogin").onclick = () => {
-      container.classList.remove("active");
-      formLogin.classList.add("active");
-      formCadastro.classList.remove("active");
-      titulo.innerText = "Entrar na EUDORA";
-    };
-  </script>
-
-</body>
-</html>
+  <div class="img-box">
+    <img src="sacola.jpg" alt="Sacola Eudora">
+  </div>
+</div>
