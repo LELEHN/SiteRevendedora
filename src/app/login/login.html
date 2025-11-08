@@ -1,40 +1,51 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Eudora Login</title>
 
 </head>
-<body>
-  
-  <div class="container" id="container">
-    
- 
-    <div class="form-box">
-      <h2 id="titulo">Entrar</h2>
 
-   
-      <form id="formLogin" class="form active">
+<body>
+
+  <div class="container" [class.active]="modoCadastro">
+
+    <div class="form-box">
+      <h2>{{ modoCadastro ? 'Criar Conta' : 'Entrar' }}</h2>
+
+      <!-- FORM LOGIN -->
+      <form class="form" [class.active]="!modoCadastro">
         <input type="email" placeholder="Email" required />
         <input type="password" placeholder="Senha" required />
         <button class="btn">Login</button>
-        <p class="toggle">Não tem conta? <span id="goCadastrar">Cadastrar</span></p>
+       <div class="links-login">
+  <span class="esqueceu-senha">Esqueceu sua senha?</span>
+  <span class="cadastrar" (click)="alternarModo()">
+    Não tem uma conta? <strong>Cadastre-se</strong>
+  </span>
+</div>
+
+
       </form>
 
-  
-      <form id="formCadastro" class="form">
+      <!-- FORM CADASTRO -->
+      <form class="form" [class.active]="modoCadastro">
         <input type="text" placeholder="Nome completo" required />
         <input type="email" placeholder="Email" required />
         <input type="password" placeholder="Criar senha" required />
         <button class="btn">Cadastrar</button>
-        <p class="toggle">Já possui conta? <span id="goLogin">Entrar</span></p>
+        <p class="toggle">
+          Já possui conta?
+          <span (click)="alternarModo()">Entrar</span>
+        </p>
       </form>
+
     </div>
 
-
     <div class="img-box">
-      <img src="sacola.jpg" alt="Sacola Eudora">
+      <img src="/sacola.jpg" alt="Sacola Eudora">
     </div>
 
   </div>
@@ -62,4 +73,5 @@
   </script>
 
 </body>
+
 </html>

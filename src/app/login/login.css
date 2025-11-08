@@ -1,9 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
   height: 100vh;
@@ -14,6 +8,7 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+/* CONTAINER */
 .container {
   width: 900px;
   height: 550px;
@@ -21,18 +16,19 @@ body {
   border-radius: 25px;
   overflow: hidden;
   display: flex;
-  box-shadow: 0px 10px 25px rgba(0,0,0,0.12);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.12);
   transition: .6s;
   position: relative;
 }
 
-/* FORMULÁRIO */
+/* FORMULÁRIO À ESQUERDA (por padrão) */
 .form-box {
   width: 50%;
   padding: 60px 50px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  transition: transform .7s ease;
 }
 
 h2 {
@@ -54,8 +50,15 @@ h2 {
 }
 
 @keyframes fade {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 input {
@@ -92,24 +95,29 @@ input {
   cursor: pointer;
 }
 
-/* IMAGEM */
+/* IMAGEM À DIREITA (por padrão) */
 .img-box {
   width: 50%;
   background: #f7a9ae;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
   transition: transform .7s ease;
 }
 
 .img-box img {
   width: 330px;
-  transition: .7s;
+  transition: transform .7s ease;
 }
 
-/* ANIMAÇÃO AO CADASTRAR */
+/* QUANDO CLICA EM CADASTRAR → IMAGEM VAI PARA A ESQUERDA */
 .container.active .img-box {
-  transform: translateX(-180px);
+  transform: translateX(-125%);
+}
+
+.container.active .form-box {
+  transform: translateX(80%);
 }
 
 /* RESPONSIVO */
@@ -134,5 +142,37 @@ input {
   .form-box {
     width: 100%;
     padding: 40px;
+    transform: none !important;
   }
+}
+
+.esqueceu-senha {
+  font-weight: 500;
+  color: #5a2a35;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.esqueceu-senha:hover {
+  color: #b83c50;
+}
+
+.links-login {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+  font-size: 0.95rem;
+  color: #5a2a35;
+}
+
+.links-login span {
+  cursor: pointer;
+  transition: .3s;
+}
+
+.esqueceu-senha:hover,
+.cadastrar:hover {
+  color: #b83c50;
 }
