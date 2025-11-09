@@ -17,9 +17,9 @@
 
       <!-- FORM LOGIN -->
       <form class="form" [class.active]="!modoCadastro">
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Senha" required />
-        <button class="btn">Login</button>
+        <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
+        <input type="password" name="senha" [(ngModel)] ="senha" placeholder="Senha" required />
+        <button class="btn" (click)="onLogin()">Login</button>
        <div class="links-login">
   <span class="esqueceu-senha">Esqueceu sua senha?</span>
   <span class="cadastrar" (click)="alternarModo()">
@@ -32,10 +32,10 @@
 
       <!-- FORM CADASTRO -->
       <form class="form" [class.active]="modoCadastro">
-        <input type="text" placeholder="Nome completo" required />
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Criar senha" required />
-        <button class="btn">Cadastrar</button>
+        <input type="text" placeholder="Nome completo" name="nome" [(ngModel)]="nome" required />
+        <input type="email" placeholder="Email" name="email" [(ngModel)] = "email" required />
+        <input type="password" placeholder="Criar senha" name="senha" [(ngModel)] = "senha" required />
+        <button class="btn" (click)="onCadastrar()">Cadastrar</button>
         <p class="toggle">
           Já possui conta?
           <span (click)="alternarModo()">Entrar</span>

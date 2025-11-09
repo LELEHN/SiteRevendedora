@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class AuthService {
-    private apiUrl = 'http://localhost:3000'; // URL do seu servidor Node
+    private apiUrl = 'http://localhost:5010'; // URL do seu servidor Node
 
     constructor(private http: HttpClient) { }
 
@@ -16,7 +16,7 @@ export class AuthService {
     }
 
     cadastrar(nome: string, email: string, senha: string): Observable<any> {
-  return this.http.post('http://localhost:5010/usuario/cadastro', {
+  return this.http.post('http://localhost:5010/usuario/cadastro/cliente', {
     nome,
     email,
     senha
