@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { jwtDecode } from 'jwt-decode'; // ✅ importa corretamente
+import { jwtDecode } from 'jwt-decode';
+import { HeaderComponent } from "../header/header"; // ✅ importa corretamente
 
 @Component({
   selector: 'app-adm',
   standalone: true, // 🔹 importante se for standalone
   templateUrl: './adm.html',
   styleUrls: ['./adm.css'] // 🔹 styleUrls (no plural)
+  ,
+  imports: [HeaderComponent]
 })
 export class Adm implements OnInit {
   nome = '';

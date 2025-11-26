@@ -1,0 +1,124 @@
+
+<app-header></app-header>
+
+
+<!-- CONTEÚDO PRINCIPAL -->
+<div class="pagamentos-container">
+  
+  <!-- Cards de Estatísticas -->
+  <div class="stats-grid">
+    <div class="stat-card stat-pago">
+      <div class="stat-icon">✓</div>
+      <div class="stat-info">
+        <div class="stat-label">Pago</div>
+        <div class="stat-value">R$ {{ totalPago.toFixed(2) }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-andamento">
+      <div class="stat-icon">⟳</div>
+      <div class="stat-info">
+        <div class="stat-label">Em andamento</div>
+        <div class="stat-value">R$ {{ totalEmAndamento.toFixed(2) }}</div>
+      </div>
+    </div>
+
+    <div class="stat-card stat-pendente">
+      <div class="stat-icon">⏱</div>
+      <div class="stat-info">
+        <div class="stat-label">Pendente</div>
+        <div class="stat-value">R$ {{ totalPendente.toFixed(2) }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filtros-container">
+    <div class="filtros-grupo">
+      <button 
+        class="filtro-btn"
+        [class.active]="filtroStatus === 'todos'"
+        (click)="setFiltro('todos')">
+        Todos
+      </button>
+      <button 
+        class="filtro-btn filtro-pago"
+        [class.active]="filtroStatus === 'pago'"
+        (click)="setFiltro('pago')">
+        Pago
+      </button>
+      <button 
+        class="filtro-btn filtro-andamento"
+        [class.active]="filtroStatus === 'em-andamento'"
+        (click)="setFiltro('em-andamento')">
+        Em andamento
+      </button>
+      <button 
+        class="filtro-btn filtro-pendente"
+        [class.active]="filtroStatus === 'pendente'"
+        (click)="setFiltro('pendente')">
+        Pendente
+      </button>
+    </div>
+
+    <input 
+      type="text" 
+      class="search-input" 
+      placeholder="Buscar cliente..."
+      [(ngModel)]="pesquisa">
+  </div>
+
+  <!-- Lista de Pagamentos -->
+  <div class="pagamentos-lista">
+    <div 
+      *ngFor="let pagamento of pagamentosFiltrados" 
+      class="pagamento-card">
+      
+      <div class="pagamento-header">
+        <h3 class="cliente-nome">{{ pagamento.cliente }}</h3>
+        <span 
+          class="status-badge"
+          [ngClass]="getStatusClass(pagamento.status)">
+          {{ getStatusLabel(pagamento.status) }}
+        </span>
+      </div>
+
+      <div class="pagamento-info">
+        <div class="info-item">
+          <span class="info-label">Valor:</span>
+          <span class="info-value valor">R$ {{ pagamento.valor.toFixed(2) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Data:</span>
+          <span class="info-value">{{ pagamento.dataPagamento | date: 'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Método:</span>
+          <span class="info-value">{{ pagamento.metodoPagamento }}</span>
+        </div>
+      </div>
+
+      <div class="pagamento-acoes">
+        <select 
+          class="status-select"
+          [value]="pagamento.status"
+          (change)="atualizarStatus(pagamento._id!, $any($event.target).value)">
+          <option value="pago">Pago</option>
+          <option value="em-andamento">Em andamento</option>
+          <option value="pendente">Pendente</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+        <button 
+          class="btn-delete"
+          (click)="deletarPagamento(pagamento._id!)">
+          🗑
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="pagamentosFiltrados.length === 0" class="empty-state">
+      <p>Nenhum pagamento encontrado</p>
+    </div>
+  </div>
+
+</div>

@@ -27,7 +27,7 @@ export class Login {
   email = '';
   senha = '';
 
-  // ✅ injeta o Router aqui
+  //injeta o Router aqui
   constructor(private authService: AuthService, private router: Router) {}
 
   alternarModo() {

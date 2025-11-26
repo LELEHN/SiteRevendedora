@@ -1,35 +1,13 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Painel - Eudora | Boticário</title>
-  <link rel="stylesheet" href="adm.css">
-</head>
-<body>
-  
-  <header class="header">
-    <div class="header-container">
-      <div class="logo"><span>Revendedora</span></div>
-      <nav class="nav">
-        <a href="#" class="nav-link active">Home</a>
-        <span class="nav-link">Pagamentos</span>
-        <span class="nav-link">Gerenciar Produtos</span>
-        <span class="nav-link">Gerenciar Clientes</span>
-      </nav>
-      <div class="header-icons">
-        <button>
-          <img src="/boneco.png" alt="Perfil">
-        </button>
-        <button>
-          <img src="/messages.png" alt="conversa">
-        </button>
-        <button>
-          <img src="/gears.png" alt="Configurações">
-        </button>
-      </div>
-    </div>
-  </header>
+ 
+ <app-header></app-header>
+
+<main class="hero">
+  <div class="hero-content">
+    <h1>Bem-vindo(a), {{ nome }}</h1>
+    <p>Gerencie seus produtos e pedidos com praticidade e elegância.</p>
+    <button class="btn">Entrar no Painel</button>
+  </div>
+</main>
 
   <main class="hero">
     <div class="hero-content">
@@ -38,5 +16,3 @@
       <button class="btn">Entrar no Painel</button>
     </div>
   </main>
-</body>
-</html>
