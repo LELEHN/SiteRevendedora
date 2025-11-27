@@ -1,133 +1,111 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../header/header'; // ⬅ ADICIONADO
+import { HeaderComponent } from "../header/header";
 
 interface Pagamento {
-  _id?: string;
-  cliente: string;
+  id: number;
+  clienteNome: string;
   valor: number;
-  status: 'pago' | 'em-andamento' | 'pendente' | 'cancelado';
-  dataPagamento: Date;
-  metodoPagamento: string;
+  status: 'pago' | 'em_andamento' | 'pendente';
+  data: Date;
+  produtos: string[];
 }
 
 @Component({
   selector: 'app-pagamentos',
   standalone: true,
-  imports: [
-    CommonModule,
-    HttpClientModule,
-    FormsModule,
-    HeaderComponent // ⬅ ADICIONADO AQUI
-  ],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './pagamentos.html',
   styleUrls: ['./pagamentos.css']
 })
 export class PagamentosComponent implements OnInit {
   pagamentos: Pagamento[] = [];
-  filtroStatus: string = 'todos';
-  pesquisa: string = '';
   
-  private apiUrl = 'http://localhost:3000/api/pagamentos';
+  pagamentosFiltrados: Pagamento[] = [];
+  filtroAtivo: string = 'todos';
+  busca: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor() { }
 
   ngOnInit(): void {
-    this.carregarPagamentos();
+    this.filtrarPagamentos();
   }
 
-  carregarPagamentos(): void {
-    this.http.get<Pagamento[]>(this.apiUrl).subscribe({
-      next: (data) => {
-        this.pagamentos = data;
-      },
-      error: (error) => {
-        console.error('Erro ao carregar pagamentos:', error);
-      }
-    });
+  // Calcula os totais por status
+  getTotalPago(): number {
+    return this.pagamentos
+      .filter(p => p.status === 'pago')
+      .reduce((total, p) => total + p.valor, 0);
   }
 
-  get pagamentosFiltrados(): Pagamento[] {
-    let resultado = this.pagamentos;
+  getTotalEmAndamento(): number {
+    return this.pagamentos
+      .filter(p => p.status === 'em_andamento')
+      .reduce((total, p) => total + p.valor, 0);
+  }
 
-    if (this.filtroStatus !== 'todos') {
-      resultado = resultado.filter(p => p.status === this.filtroStatus);
+  getTotalPendente(): number {
+    return this.pagamentos
+      .filter(p => p.status === 'pendente')
+      .reduce((total, p) => total + p.valor, 0);
+  }
+
+  // Filtrar pagamentos
+  filtrarPagamentos(): void {
+    let resultado = [...this.pagamentos];
+
+    // Filtro por status
+    if (this.filtroAtivo !== 'todos') {
+      resultado = resultado.filter(p => p.status === this.filtroAtivo);
     }
 
-    if (this.pesquisa) {
+    // Filtro por busca
+    if (this.busca.trim() !== '') {
       resultado = resultado.filter(p => 
-        p.cliente.toLowerCase().includes(this.pesquisa.toLowerCase())
+        p.clienteNome.toLowerCase().includes(this.busca.toLowerCase())
       );
     }
 
-    return resultado;
+    this.pagamentosFiltrados = resultado;
   }
 
-  get totalPago(): number {
-    return this.pagamentos
-      .filter(p => p.status === 'pago')
-      .reduce((sum, p) => sum + p.valor, 0);
+  // Mudar filtro ativo
+  mudarFiltro(filtro: string): void {
+    this.filtroAtivo = filtro;
+    this.filtrarPagamentos();
   }
 
-  get totalEmAndamento(): number {
-    return this.pagamentos
-      .filter(p => p.status === 'em-andamento')
-      .reduce((sum, p) => sum + p.valor, 0);
+  // Verificar se filtro está ativo
+  isFiltroAtivo(filtro: string): boolean {
+    return this.filtroAtivo === filtro;
   }
 
-  get totalPendente(): number {
-    return this.pagamentos
-      .filter(p => p.status === 'pendente')
-      .reduce((sum, p) => sum + p.valor, 0);
-  }
-
-  atualizarStatus(id: string, novoStatus: string): void {
-    this.http.patch(`${this.apiUrl}/${id}`, { status: novoStatus }).subscribe({
-      next: () => {
-        this.carregarPagamentos();
-      },
-      error: (error) => {
-        console.error('Erro ao atualizar status:', error);
-      }
+  // Formatar valor em Real
+  formatarValor(valor: number): string {
+    return valor.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
     });
   }
 
-  deletarPagamento(id: string): void {
-    if (confirm('Deseja realmente excluir este pagamento?')) {
-      this.http.delete(`${this.apiUrl}/${id}`).subscribe({
-        next: () => {
-          this.carregarPagamentos();
-        },
-        error: (error) => {
-          console.error('Erro ao deletar pagamento:', error);
-        }
-      });
+  // Obter classe CSS do status
+  getStatusClass(status: string): string {
+    switch(status) {
+      case 'pago': return 'status-pago';
+      case 'em_andamento': return 'status-andamento';
+      case 'pendente': return 'status-pendente';
+      default: return '';
     }
   }
 
-  getStatusClass(status: string): string {
-    const classes: { [key: string]: string } = {
-      'pago': 'status-pago',
-      'em-andamento': 'status-andamento',
-      'pendente': 'status-pendente',
-      'cancelado': 'status-cancelado'
-    };
-    return classes[status] || '';
-  }
-
-  getStatusLabel(status: string): string {
-    const labels: { [key: string]: string } = {
-      'pago': 'Pago',
-      'em-andamento': 'Em andamento',
-      'pendente': 'Pendente',
-      'cancelado': 'Cancelado'
-    };
-    return labels[status] || status;
-  }
-
-  setFiltro(status: string): void {
-    this.filtroStatus = status;
+  // Obter texto do status
+  getStatusTexto(status: string): string {
+    switch(status) {
+      case 'pago': return 'Pago';
+      case 'em_andamento': return 'Em andamento';
+      case 'pendente': return 'Pendente';
+      default: return '';
+    }
   }
 }
