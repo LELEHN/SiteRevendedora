@@ -4,11 +4,13 @@ import { Login } from './login/login';
 import { Adm } from './adm/adm';
 import { PagamentosComponent } from './pagamentos/pagamentos';
 import { GerenciarProdutosComponent } from './gerenciar-produtos/gerenciar-produtos';
+import { GerenciarClientesComponent } from './gerenciar-clientes/gerenciar-clientes';
 
 export const routes: Routes = [
     {path: '', component: Home},
     {path: 'login', component: Login},
     {path: 'adm', component: Adm},
     {path: 'pagamentos', component: PagamentosComponent},
-    {path: 'gerenciar-produtos', component: GerenciarProdutosComponent}
+    {path: 'gerenciar-produtos', component: GerenciarProdutosComponent},
+    {path: 'gerenciar-clientes', component: GerenciarClientesComponent}
 ];

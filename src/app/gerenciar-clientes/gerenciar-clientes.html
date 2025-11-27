@@ -1,0 +1,120 @@
+<app-header></app-header>
+
+<div class="container-clientes">
+  <!-- Barra de Ações -->
+  <div class="acoes-bar">
+    <div class="acoes-esquerda">
+      <button class="btn-adicionar" (click)="abrirModalAdicionar()">
+        <span class="icon-plus">+</span>
+        ADICIONAR CLIENTE
+      </button>
+    </div>
+    
+    <div class="busca-container">
+      <input 
+        type="text" 
+        class="input-busca" 
+        placeholder="Buscar cliente..."
+        [(ngModel)]="busca"
+        (input)="filtrarClientes()"
+      />
+      <img src="lupa.png" alt="Buscar" class="icon-busca" />
+    </div>
+  </div>
+
+  <!-- Lista de Clientes -->
+  <div class="clientes-lista">
+    <div *ngIf="clientesFiltrados.length === 0" class="sem-clientes">
+      Nenhum cliente encontrado
+    </div>
+
+    <div 
+      *ngFor="let cliente of clientesFiltrados" 
+      class="cliente-card"
+    >
+      <div class="cliente-foto-container">
+        <img 
+          [src]="cliente.foto" 
+          [alt]="cliente.nome"
+          class="cliente-foto"
+        />
+      </div>
+      
+      <div class="cliente-info">
+        <h3 class="cliente-nome">{{ cliente.nome }}</h3>
+        <p class="cliente-compras">
+          Comprou <span class="compras-valor">{{ cliente.comprasFinalizadasMesAtual || 0 }} prod.</span> este mês
+        </p>
+      </div>
+      
+      <div class="cliente-acoes">
+        <button 
+          class="btn-icone btn-editar" 
+          (click)="abrirModalEditar(cliente)"
+          title="Editar cliente"
+        >
+          ✏️
+        </button>
+        <button 
+          class="btn-icone btn-remover" 
+          (click)="removerCliente(cliente.id)"
+          title="Remover cliente"
+        >
+          🗑️
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="mostrarModal" (click)="fecharModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-fechar" (click)="fecharModal()">×</button>
+    
+    <h2 class="modal-titulo">
+      {{ modoEdicao ? 'Editar Cliente' : 'Adicionar Cliente' }}
+    </h2>
+    
+    <div class="modal-formulario">
+      <div class="form-group">
+        <label class="form-label">Nome do Cliente *</label>
+        <input
+          type="text"
+          class="form-input"
+          [(ngModel)]="formulario.nome"
+          placeholder="Ex: JubiscreudoDoVrau"
+        />
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">URL da Foto (opcional)</label>
+        <input
+          type="text"
+          class="form-input"
+          [(ngModel)]="formulario.foto"
+          placeholder="https://exemplo.com/foto.jpg"
+        />
+        <small class="form-hint">Deixe em branco para gerar um avatar automático</small>
+      </div>
+
+      <div class="form-group" *ngIf="formulario.foto || formulario.nome">
+        <label class="form-label">Preview</label>
+        <img 
+          [src]="formulario.foto || gerarFotoAvatar(formulario.nome)" 
+          alt="Preview"
+          class="preview-foto"
+        />
+      </div>
+      
+      <div class="modal-acoes">
+        <button class="btn-cancelar" (click)="fecharModal()">
+          Cancelar
+        </button>
+        <button class="btn-salvar" (click)="salvarCliente()">
+          {{ modoEdicao ? 'Salvar' : 'Adicionar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
